@@ -35,7 +35,8 @@ app todoStore request respond = do
             Just (Just desc) -> decodeUtf8 desc
             _ -> "Untitled todo"
 
-      parseResult <- parseUserInput userInput
+      todos <- readIORef todoStore
+      parseResult <- parseUserInput todos userInput
       case parseResult of
         Left errorMsg -> do
           -- Return error message in HTML
@@ -44,7 +45,6 @@ app todoStore request respond = do
               renderBS $
                 errorView errorMsg
         Right parsedTodo -> do
-          todos <- readIORef todoStore
           let newId = case todos of
                 [] -> 1
                 _ -> maximum (map todoId todos) + 1
