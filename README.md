@@ -9,7 +9,3 @@ To run it:
 ```sh
 nix run
 ```
-
-## Tech
-
-- [Hyperbole](https://hackage.haskell.org/package/hyperbole-0.4.3/docs/Web-Hyperbole.html)
