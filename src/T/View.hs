@@ -4,7 +4,6 @@ module T.View where
 
 import Data.Time (fromGregorian)
 import Htmx.Lucid.Core (hxPost_, hxSwap_, hxTarget_)
-import Htmx.Lucid.Extra (hxIndicator_)
 import Lucid
 import T.Types (Priority (..), Todo (..), formatDeadline)
 
@@ -18,7 +17,7 @@ page todos = doctypehtml_ $ do
     script_ [src_ "https://unpkg.com/htmx.org@1.9.12"] ("" :: Text)
     script_ [src_ "https://unpkg.com/hyperscript.org@0.9.12"] ("" :: Text)
     script_ [src_ "https://cdn.tailwindcss.com"] ("" :: Text)
-    script_ [] ("window.addEventListener('load', function() { document.body.addEventListener('htmx:beforeRequest', function(e) { const input = document.getElementById('todo-input'); if (input) { input.disabled = true; console.log('Input disabled'); } }); document.body.addEventListener('htmx:afterRequest', function(e) { const input = document.getElementById('todo-input'); if (input) { input.disabled = false; console.log('Input enabled'); } }); });" :: Text)
+    script_ [] ("window.addEventListener('load', function() { document.body.addEventListener('htmx:beforeRequest', function(e) { const input = document.getElementById('todo-input'); if (input) { input.disabled = true; input.placeholder = '🧠 Processing...'; input.value = ''; } }); document.body.addEventListener('htmx:afterRequest', function(e) { const input = document.getElementById('todo-input'); if (input) { input.disabled = false; input.placeholder = 'Add a new todo...'; } }); });" :: Text)
   body_ [class_ "bg-gray-50 min-h-screen"] $ do
     div_ [class_ "max-w-3xl mx-auto p-8"] $ do
       h1_ [class_ "text-3xl font-bold text-gray-900 mb-8 text-center"] "Todo List"
@@ -31,26 +30,16 @@ searchBoxView = do
     [ hxPost_ "/add-todo"
     , hxTarget_ "#main-content"
     , hxSwap_ "innerHTML"
-    , hxIndicator_ "#loading"
     ]
     $ do
-      div_ [class_ "relative"] $ do
-        input_
-          [ id_ "todo-input"
-          , class_ "w-full px-6 py-3 text-lg border-2 border-gray-200 rounded-full outline-none mb-8 shadow-sm focus:border-blue-500 focus:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
-          , placeholder_ "Add a new todo..."
-          , name_ "description"
-          , type_ "text"
-          , autofocus_
-          ]
-        -- Loading indicator
-        div_
-          [ id_ "loading"
-          , class_ "htmx-indicator absolute right-4 top-3 flex items-center gap-2 text-blue-600"
-          ]
-          $ do
-            div_ [class_ "animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"] ""
-            span_ [class_ "text-sm font-medium"] "🧠 Thinking..."
+      input_
+        [ id_ "todo-input"
+        , class_ "w-full px-6 py-3 text-lg border-2 border-gray-200 rounded-full outline-none mb-8 shadow-sm focus:border-blue-500 focus:shadow-lg transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+        , placeholder_ "Add a new todo..."
+        , name_ "description"
+        , type_ "text"
+        , autofocus_
+        ]
 
 -- Main content area (form + todo list)
 mainContentView :: [Todo] -> Html ()
