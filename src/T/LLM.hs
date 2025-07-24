@@ -99,6 +99,19 @@ Parse this input: |]
 extractContexts :: [Todo] -> [Text]
 extractContexts todos = ordNub $ mapMaybe todoContext todos
 
+-- Check if Ollama is running by making a simple request
+checkOllama :: IO Bool
+checkOllama = do
+  let testOps =
+        defaultGenerateOps
+          { modelName = "llama3.2"
+          , prompt = "ping"
+          }
+  result <- generate testOps
+  case result of
+    Left _ -> pure False
+    Right _ -> pure True
+
 -- Parse user input using Ollama with current date and existing contexts
 parseUserInput :: [Todo] -> Text -> IO (Either Text Todo)
 parseUserInput existingTodos userInput = do

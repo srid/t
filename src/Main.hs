@@ -9,7 +9,7 @@ import Network.HTTP.Types (status200)
 import Network.HTTP.Types.URI (parseQuery)
 import Network.Wai (Application, lazyRequestBody, pathInfo, requestMethod, responseLBS)
 import Network.Wai.Handler.Warp (run)
-import T.LLM (parseUserInput)
+import T.LLM (checkOllama, parseUserInput)
 import T.Types (Todo (..), sampleTodos, todoId)
 import T.View (errorView, mainContentView, page)
 
@@ -74,10 +74,20 @@ main = do
     -- Set line buffering for immediate log output
     hSetBuffering stdout LineBuffering
 
-    -- Create initial todo store with sample data
-    todoStore <- newIORef sampleTodos
-    putStrLn "🚀 Starting intelligent todo app server..."
-    putStrLn "📝 Web UI: http://localhost:3000"
-    putStrLn "🧠 LLM backend: Ollama (llama3.2)"
-    putStrLn "✨ Ready for natural language todo input!"
-    run 3000 (app todoStore)
+    -- Check if Ollama is running before starting
+    putStrLn "🔍 Checking Ollama connection..."
+    ollamaRunning <- checkOllama
+    if not ollamaRunning
+      then do
+        putStrLn "❌ ERROR: Ollama is not running or not accessible at http://127.0.0.1:11434"
+        exitFailure
+      else do
+        putStrLn "✅ Ollama connection confirmed"
+
+        -- Create initial todo store with sample data
+        todoStore <- newIORef sampleTodos
+        putStrLn "🚀 Starting intelligent todo app server..."
+        putStrLn "📝 Web UI: http://localhost:3000"
+        putStrLn "🧠 LLM backend: Ollama (llama3.2)"
+        putStrLn "✨ Ready for natural language todo input!"
+        run 3000 (app todoStore)
