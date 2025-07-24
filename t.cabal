@@ -54,6 +54,7 @@ common shared
     , directory
     , file-embed
     , filepath
+    , here
     , htmx
     , htmx-lucid
     , htmx-servant
