@@ -27,23 +27,18 @@
       packages = {
         # Add source or Hackage overrides here
         # (Local packages are added automatically)
-        /*
-        aeson.source = "1.5.0.0" # Hackage version
-        shower.source = inputs.shower; # Flake input
-        */
+        hyperbole.source = inputs.hyperbole;
+        atomic-css.source = inputs.atomic-css;
       };
 
       # Add your package overrides here
       settings = {
         t = {
           stan = true;
-          # haddock = false;
         };
-        /*
-        aeson = {
-          check = false;
-        };
-        */
+        hyperbole.check = false;
+        hyperbole.jailbreak = true; # data-default
+        atomic-css.check = false;
       };
 
       # Development shell configuration
