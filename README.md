@@ -1,8 +1,8 @@
 # t
 
-WIP: A simple Todo app based on Andrej Karpathy's "partially autonomous" notion of Software 3.0.[^a]
+WIP: A simple "partially autonomous"[^a] Todo app.
 
-[^a]: https://clearthink-ai.com/storyboards/software-is-changing-again/story
+[^a]: See Andrej Karpathy's talk [Software is Changing (Again)](https://clearthink-ai.com/storyboards/software-is-changing-again/story)
 
 ## Tech
 
