@@ -11,7 +11,10 @@
       ];
 
       # Disable TUI 
-      cli.environment.PC_DISABLE_TUI = true;
+      cli = {
+        environment.PC_DISABLE_TUI = true;
+        options.no-server = true;
+      };
 
       services =
         let
