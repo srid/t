@@ -78,5 +78,8 @@ common shared
   default-language:   GHC2021
 
 executable t
-  import:  shared
-  main-is: Main.hs
+  import:        shared
+  main-is:       Main.hs
+  other-modules:
+    T.Types
+    T.View
