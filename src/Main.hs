@@ -71,7 +71,13 @@ main :: IO ()
 main = do
   -- For withUtf8, see https://serokell.io/blog/haskell-with-utf8
   Utf8.withUtf8 $ do
+    -- Set line buffering for immediate log output
+    hSetBuffering stdout LineBuffering
+
     -- Create initial todo store with sample data
     todoStore <- newIORef sampleTodos
-    putStrLn "Starting server: http://localhost:3000"
+    putStrLn "🚀 Starting intelligent todo app server..."
+    putStrLn "📝 Web UI: http://localhost:3000"
+    putStrLn "🧠 LLM backend: Ollama (llama3.2)"
+    putStrLn "✨ Ready for natural language todo input!"
     run 3000 (app todoStore)

@@ -45,9 +45,5 @@
       # What should haskell-flake add to flake outputs?
       autoWire = [ "packages" "apps" "checks" ]; # Wire all but the devShell
     };
-
-    # Default package & app.
-    packages.default = self'.packages.t;
-    apps.default = self'.apps.t;
   };
 }
