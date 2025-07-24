@@ -9,8 +9,9 @@ import Network.HTTP.Types (status200)
 import Network.HTTP.Types.URI (parseQuery)
 import Network.Wai (Application, lazyRequestBody, pathInfo, requestMethod, responseLBS)
 import Network.Wai.Handler.Warp (run)
-import T.Types (Priority (..), Todo (..), sampleTodos, todoId)
-import T.View (page, todoListView)
+import T.LLM (parseUserInput)
+import T.Types (Todo (..), sampleTodos, todoId)
+import T.View (errorView, mainContentView, page)
 
 -- Global state for todos (in a real app, you'd use a database)
 type TodoStore = IORef [Todo]
@@ -30,20 +31,30 @@ app todoStore request respond = do
     ("POST", ["add-todo"]) -> do
       body <- lazyRequestBody request
       let formData = parseQuery (toStrict body)
-          description = case lookup "description" formData of
+          userInput = case lookup "description" formData of
             Just (Just desc) -> decodeUtf8 desc
             _ -> "Untitled todo"
-      todos <- readIORef todoStore
-      let newId = case todos of
-            [] -> 1
-            _ -> maximum (map todoId todos) + 1
-          newTodo = Todo newId description Nothing Nothing Medium
-      writeIORef todoStore (todos ++ [newTodo])
-      updatedTodos <- readIORef todoStore
-      respond $
-        responseLBS status200 [("Content-Type", "text/html")] $
-          renderBS $
-            todoListView updatedTodos
+
+      parseResult <- parseUserInput userInput
+      case parseResult of
+        Left errorMsg -> do
+          -- Return error message in HTML
+          respond $
+            responseLBS status200 [("Content-Type", "text/html")] $
+              renderBS $
+                errorView errorMsg
+        Right parsedTodo -> do
+          todos <- readIORef todoStore
+          let newId = case todos of
+                [] -> 1
+                _ -> maximum (map todoId todos) + 1
+              newTodo = parsedTodo {todoId = newId}
+          writeIORef todoStore (todos ++ [newTodo])
+          updatedTodos <- readIORef todoStore
+          respond $
+            responseLBS status200 [("Content-Type", "text/html")] $
+              renderBS $
+                mainContentView updatedTodos
     _ -> do
       todos <- readIORef todoStore
       respond $

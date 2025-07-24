@@ -34,6 +34,7 @@
         t = {
           stan = true;
         };
+        ollama-haskell = { broken = false; check = false; };
       };
 
       # Development shell configuration

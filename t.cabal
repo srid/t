@@ -52,6 +52,7 @@ common shared
     , bytestring
     , data-default
     , directory
+    , file-embed
     , filepath
     , htmx
     , htmx-lucid
@@ -60,6 +61,7 @@ common shared
     , http-types
     , lucid2
     , mtl
+    , ollama-haskell
     , optics-core
     , profunctors
     , relude                 >=1.0
@@ -81,5 +83,6 @@ executable t
   import:        shared
   main-is:       Main.hs
   other-modules:
+    T.LLM
     T.Types
     T.View
