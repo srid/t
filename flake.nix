@@ -13,11 +13,6 @@
     services-flake.url = "github:juspay/services-flake";
     git-hooks.url = "github:cachix/git-hooks.nix";
     git-hooks.flake = false;
-
-    hyperbole.url = "github:seanhess/hyperbole";
-    hyperbole.flake = false;
-    atomic-css.url = "github:seanhess/atomic-css";
-    atomic-css.flake = false;
   };
 
   outputs = inputs:

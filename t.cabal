@@ -48,25 +48,30 @@ common shared
   build-depends:
     , aeson
     , async
-    , atomic-css
     , base                   >=4   && <5
+    , bytestring
     , data-default
     , directory
     , filepath
+    , htmx
+    , htmx-lucid
+    , htmx-servant
     , http-api-data
     , http-types
-    , hyperbole
+    , lucid2
     , mtl
     , optics-core
     , profunctors
     , relude                 >=1.0
+    , servant
+    , servant-lucid
+    , servant-server
     , shower
+    , text
     , time
     , wai
     , wai-middleware-static
-    , wai-websockets
     , warp
-    , websockets
     , with-utf8
 
   hs-source-dirs:     src

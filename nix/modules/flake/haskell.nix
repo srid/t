@@ -27,8 +27,6 @@
       packages = {
         # Add source or Hackage overrides here
         # (Local packages are added automatically)
-        hyperbole.source = inputs.hyperbole;
-        atomic-css.source = inputs.atomic-css;
       };
 
       # Add your package overrides here
@@ -36,9 +34,6 @@
         t = {
           stan = true;
         };
-        hyperbole.check = false;
-        hyperbole.jailbreak = true; # data-default
-        atomic-css.check = false;
       };
 
       # Development shell configuration
